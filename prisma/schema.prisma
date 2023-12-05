@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 enum UserRole {
-    User
-    Admin
+    USER
+    ADMIN
 }
 
 generator client {
@@ -55,7 +55,7 @@ model User {
     email         String?       @unique
     emailVerified DateTime?
     image         String?
-    role          UserRole      @default(User)
+    role          UserRole      @default(USER)
     accounts      Account[]
     sessions      Session[]
     likes         PostLike[]
@@ -78,6 +78,7 @@ model Post {
     fullDescription  String?
     link             String?
     images           String[]
+    isPublished      Boolean  @default(false)
     createdAt        DateTime @default(now())
     updatedAt        DateTime @updatedAt
 

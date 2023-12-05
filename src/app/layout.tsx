@@ -6,6 +6,8 @@ import { cookies } from "next/headers";
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/providers/theme.provider";
 import { Header } from "./_components/header";
+import { ModalProvider } from "~/providers/modal.provider";
+import { ToasterProvider } from "~/providers/toaster.provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +35,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <ToasterProvider />
+            <ModalProvider />
             <Header />
             <main className="mb-8 md:mb-16">{children}</main>
           </ThemeProvider>

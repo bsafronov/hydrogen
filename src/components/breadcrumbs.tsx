@@ -13,7 +13,7 @@ export function Breadcrumbs({ items }: Props) {
   return (
     <div className="mb-8 flex flex-wrap items-center gap-1 md:mb-16">
       {items.map((item, index) => (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" key={item.href}>
           {index !== 0 && <ChevronRight className="h-4 w-4" />}
           <Link
             href={item.href}

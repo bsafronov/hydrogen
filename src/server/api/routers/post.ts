@@ -1,42 +1,75 @@
 import { z } from "zod";
-
 import {
+  adminProcedure,
   createTRPCRouter,
-  protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
-  create: protectedProcedure
-    .input(z.object({ name: z.string().min(1) }))
-    .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  create: adminProcedure
+    .input(
+      z.object({
+        title: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      const { title } = input;
       return ctx.db.post.create({
         data: {
-          name: input.name,
-          createdBy: { connect: { id: ctx.session.user.id } },
+          title,
         },
       });
     }),
+  update: adminProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().optional(),
+        shortDescription: z.string().optional(),
+        fullDescription: z.string().optional(),
+        link: z.string().optional(),
+        images: z.array(z.string()).optional(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      const { id, fullDescription, shortDescription, title, link, images } =
+        input;
+      return ctx.db.post.update({
+        where: {
+          id,
+        },
+        data: {
+          title,
+          shortDescription,
+          fullDescription,
+          link,
+          images,
+        },
+      });
+    }),
+  delete: adminProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { id } = input;
 
-  getLatest: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.post.findFirst({
-      orderBy: { createdAt: "desc" },
-      where: { createdBy: { id: ctx.session.user.id } },
-    });
-  }),
+      return ctx.db.post.delete({
+        where: {
+          id,
+        },
+      });
+    }),
+  getOne: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      const { id } = input;
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
+      return ctx.db.post.findUnique({
+        where: {
+          id,
+        },
+      });
+    }),
+  getMany: publicProcedure.query(({ ctx }) => {
+    return ctx.db.post.findMany({});
   }),
 });

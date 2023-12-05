@@ -3,7 +3,7 @@ import { Logo } from "~/components/logo";
 import { ThemeSwitcher } from "~/components/theme-switcher";
 import { getServerAuthSession } from "~/server/auth";
 import { LoginSheet } from "./login-sheet";
-import { UserButton } from "./user-button";
+import { UserButton } from "./user-button/user-button";
 
 export async function Header() {
   const session = await getServerAuthSession();
