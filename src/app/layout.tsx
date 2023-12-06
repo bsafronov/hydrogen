@@ -8,6 +8,7 @@ import { ThemeProvider } from "~/providers/theme.provider";
 import { Header } from "./_components/header";
 import { ModalProvider } from "~/providers/modal.provider";
 import { ToasterProvider } from "~/providers/toaster.provider";
+import { AuthProvider } from "~/providers/auth.provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,19 +29,21 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
       <body className={`font-sans ${inter.variable}`}>
-        <TRPCReactProvider cookies={cookies().toString()}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ToasterProvider />
-            <ModalProvider />
-            <Header />
-            <main className="mb-8 md:mb-16">{children}</main>
-          </ThemeProvider>
-        </TRPCReactProvider>
+        <AuthProvider>
+          <TRPCReactProvider cookies={cookies().toString()}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ToasterProvider />
+              <ModalProvider />
+              <Header />
+              <main className="mb-8 md:mb-16">{children}</main>
+            </ThemeProvider>
+          </TRPCReactProvider>
+        </AuthProvider>
       </body>
     </html>
   );

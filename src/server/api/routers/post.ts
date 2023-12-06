@@ -29,11 +29,19 @@ export const postRouter = createTRPCRouter({
         fullDescription: z.string().optional(),
         link: z.string().optional(),
         images: z.array(z.string()).optional(),
+        isPublished: z.boolean().optional(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      const { id, fullDescription, shortDescription, title, link, images } =
-        input;
+      const {
+        id,
+        fullDescription,
+        shortDescription,
+        title,
+        link,
+        images,
+        isPublished,
+      } = input;
       return ctx.db.post.update({
         where: {
           id,
@@ -44,6 +52,7 @@ export const postRouter = createTRPCRouter({
           fullDescription,
           link,
           images,
+          isPublished,
         },
       });
     }),
@@ -71,5 +80,31 @@ export const postRouter = createTRPCRouter({
     }),
   getMany: publicProcedure.query(({ ctx }) => {
     return ctx.db.post.findMany({});
+  }),
+  getManyPublished: publicProcedure.query(({ ctx }) => {
+    return ctx.db.post.findMany({
+      where: {
+        isPublished: true,
+      },
+      select: {
+        id: true,
+        likes: {
+          select: {
+            userId: true,
+          },
+        },
+        comments: {
+          select: {
+            userId: true,
+          },
+        },
+
+        createdAt: true,
+        title: true,
+        shortDescription: true,
+        link: true,
+        images: true,
+      },
+    });
   }),
 });

@@ -1,6 +1,11 @@
-import { LayoutDashboard } from "lucide-react";
+"use client";
+
+import { LayoutDashboard, LogOut, ShieldCheck } from "lucide-react";
+import { type Session } from "next-auth";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Dialog } from "~/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,15 +14,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { getServerAuthSession } from "~/server/auth";
-import { AdminFormButton } from "./admin-form-button";
-import { Logout } from "./logout";
-import { Dialog } from "~/components/ui/dialog";
+import { useModalStore } from "~/store/modal.store";
 
-export async function UserButton() {
-  const session = await getServerAuthSession();
+type Props = {
+  session: Session;
+};
+export function UserButton({ session }: Props) {
+  const toggleAdminForm = useModalStore((state) => state.toggleAdmin);
 
-  if (!session) return null;
+  if (!session) {
+    return null;
+  }
 
   const {
     user: { role, image, name },
@@ -42,8 +49,21 @@ export async function UserButton() {
               </Link>
             )}
           </DropdownMenuItem>
-          {role !== "ADMIN" && <AdminFormButton />}
-          <Logout />
+          {role !== "ADMIN" && (
+            <DropdownMenuItem
+              onClick={toggleAdminForm}
+              className="flex items-center gap-4"
+            >
+              <ShieldCheck className="h-4 w-4" /> Стать админом
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem
+            className="flex w-full items-center gap-4 text-destructive focus:text-destructive"
+            onClick={() => void signOut()}
+          >
+            <LogOut className="h-4 w-4" />
+            Выйти
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </Dialog>

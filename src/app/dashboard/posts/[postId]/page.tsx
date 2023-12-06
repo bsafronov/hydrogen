@@ -1,3 +1,5 @@
+import { formatRelative } from "date-fns";
+import { ru } from "date-fns/locale";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "~/components/breadcrumbs";
 import { Container } from "~/components/container";
@@ -27,6 +29,20 @@ export default async function Page({ params: { postId } }: Props) {
           { label: post.title, href: `/dashboard/posts/${post.id}` },
         ]}
       />
+      <div className="mb-8 flex flex-col items-end justify-end text-xs text-muted-foreground">
+        <p className="">
+          Создан:{" "}
+          {formatRelative(new Date(post.createdAt), new Date(), {
+            locale: ru,
+          })}
+        </p>
+        <p>
+          Изменён:{" "}
+          {formatRelative(new Date(post.updatedAt), new Date(), {
+            locale: ru,
+          })}
+        </p>
+      </div>
       <EditPostForm {...post} />
     </Container>
   );

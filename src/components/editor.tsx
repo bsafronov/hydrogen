@@ -11,16 +11,18 @@ import {
   Divide,
   Heading1,
   Heading2,
+  Heading3,
+  Heading4,
   Highlighter,
   Italic,
   Link,
   List,
   ListOrdered,
-  type LucideIcon,
   Redo2,
   Strikethrough,
   TextQuote,
   Undo2,
+  type LucideIcon,
 } from "lucide-react";
 import { useCallback } from "react";
 import { Toggle } from "./ui/toggle";
@@ -34,7 +36,7 @@ export const Editor = ({ onChange, value }: Props) => {
   const editor = useEditor({
     editorProps: {
       attributes: {
-        class: "p-4 border",
+        class: "p-4 hover:outline-none outline-none prose dark:prose-invert",
       },
     },
     extensions: [
@@ -78,8 +80,8 @@ export const Editor = ({ onChange, value }: Props) => {
   if (!editor) return null;
 
   return (
-    <div className="rounded-md border">
-      <div className="flex flex-wrap items-center divide-x border-b">
+    <div className="overflow-hidden rounded-md border">
+      <div className="flex flex-wrap divide-x border-b">
         <div>
           <EditorToggler
             onPressedChange={() => editor.chain().focus().toggleBold().run()}
@@ -143,7 +145,22 @@ export const Editor = ({ onChange, value }: Props) => {
             pressed={editor.isActive("heading", { level: 2 })}
             icon={Heading2}
           />
+          <EditorToggler
+            onPressedChange={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+            pressed={editor.isActive("heading", { level: 3 })}
+            icon={Heading3}
+          />
+          <EditorToggler
+            onPressedChange={() =>
+              editor.chain().focus().toggleHeading({ level: 4 }).run()
+            }
+            pressed={editor.isActive("heading", { level: 4 })}
+            icon={Heading4}
+          />
         </div>
+
         <div>
           <EditorToggler
             onPressedChange={() =>
@@ -160,22 +177,27 @@ export const Editor = ({ onChange, value }: Props) => {
             icon={ListOrdered}
           />
         </div>
-        <EditorToggler
-          onPressedChange={() =>
-            editor.chain().focus().toggleBlockquote().run()
-          }
-          pressed={editor.isActive("blockquote")}
-          icon={TextQuote}
-        />
-        <EditorToggler
-          onPressedChange={() =>
-            editor.chain().focus().setHorizontalRule().run()
-          }
-          pressed={editor.isActive("horizontalRule")}
-          icon={Divide}
-        />
 
-        <div className="ml-auto">
+        <div>
+          <EditorToggler
+            onPressedChange={() =>
+              editor.chain().focus().toggleBlockquote().run()
+            }
+            pressed={editor.isActive("blockquote")}
+            icon={TextQuote}
+          />
+        </div>
+
+        <div>
+          <EditorToggler
+            onPressedChange={() =>
+              editor.chain().focus().setHorizontalRule().run()
+            }
+            pressed={editor.isActive("horizontalRule")}
+            icon={Divide}
+          />
+        </div>
+        <div>
           <EditorToggler
             onPressedChange={() => editor.chain().focus().undo().run()}
             pressed={!editor.can().chain().focus().undo().run()}
