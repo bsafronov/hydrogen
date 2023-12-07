@@ -1,5 +1,5 @@
 import { Smile } from "lucide-react";
-import { GridList } from "~/components/grid-list";
+import { FlexList } from "~/components/flex-list";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 
 const recommendations = [
@@ -47,9 +47,9 @@ const recommendations = [
 
 export function RecommendationList() {
   return (
-    <GridList>
+    <FlexList>
       {recommendations.map((item) => (
-        <li key={item.role}>
+        <li key={item.role} className="grow">
           <Card className="h-full">
             <CardHeader>
               <div className="flex items-center gap-2">
@@ -68,6 +68,6 @@ export function RecommendationList() {
           </Card>
         </li>
       ))}
-    </GridList>
+    </FlexList>
   );
 }

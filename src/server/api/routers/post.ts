@@ -87,18 +87,19 @@ export const postRouter = createTRPCRouter({
         isPublished: true,
       },
       select: {
-        id: true,
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
+          },
+        },
         likes: {
-          select: {
-            userId: true,
+          take: ctx.session?.user ? 1 : 0,
+          where: {
+            userId: ctx.session?.user.id,
           },
         },
-        comments: {
-          select: {
-            userId: true,
-          },
-        },
-
+        id: true,
         createdAt: true,
         title: true,
         shortDescription: true,

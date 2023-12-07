@@ -1,4 +1,4 @@
-import { GridList } from "~/components/grid-list";
+import { FlexList } from "~/components/flex-list";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 const skills = [
@@ -44,9 +44,9 @@ const skills = [
 
 export function SkillList() {
   return (
-    <GridList>
+    <FlexList>
       {skills.map(({ title, description }) => (
-        <li key={title}>
+        <li key={title} className="grow">
           <Card className="h-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">{title}</CardTitle>
@@ -57,6 +57,6 @@ export function SkillList() {
           </Card>
         </li>
       ))}
-    </GridList>
+    </FlexList>
   );
 }

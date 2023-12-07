@@ -2,8 +2,8 @@ import { Container } from "~/components/container";
 import { Logo } from "~/components/logo";
 import { ThemeSwitcher } from "~/components/theme-switcher";
 import { getServerAuthSession } from "~/server/auth";
-import { LoginSheet } from "./login-sheet";
 import { UserButton } from "./user-button";
+import { LoginButton } from "./login-button";
 
 export async function Header() {
   const session = await getServerAuthSession();
@@ -14,7 +14,7 @@ export async function Header() {
         <Logo />
         <div className="flex items-center gap-2">
           <ThemeSwitcher />
-          {!session && <LoginSheet />}
+          {!session && <LoginButton />}
           {session && <UserButton session={session} />}
         </div>
       </Container>

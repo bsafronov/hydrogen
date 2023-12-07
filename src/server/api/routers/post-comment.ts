@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const postCommentRouter = createTRPCRouter({
   create: protectedProcedure
@@ -12,6 +16,36 @@ export const postCommentRouter = createTRPCRouter({
           postId,
           userId: ctx.session.user.id,
           description,
+        },
+      });
+    }),
+  getManyByPost: publicProcedure
+    .input(z.object({ postId: z.string() }))
+    .query(({ ctx, input }) => {
+      const { postId } = input;
+      return ctx.db.post.findFirst({
+        where: {
+          id: postId,
+        },
+        select: {
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+          comments: {
+            orderBy: {
+              createdAt: "desc",
+            },
+            include: {
+              user: {
+                select: {
+                  image: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
       });
     }),

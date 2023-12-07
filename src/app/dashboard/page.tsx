@@ -3,7 +3,7 @@ import { Breadcrumbs } from "~/components/breadcrumbs";
 import { Container } from "~/components/container";
 import { Button } from "~/components/ui/button";
 
-export default function Page() {
+export default async function Page() {
   return (
     <div>
       <Container>

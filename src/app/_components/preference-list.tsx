@@ -1,6 +1,5 @@
 import { GiCardJoker } from "react-icons/gi";
 import { IoGameController } from "react-icons/io5";
-import { GridList } from "~/components/grid-list";
 import {
   Card,
   CardDescription,
@@ -11,9 +10,9 @@ import { IconLabel } from "~/components/ui/icon-label";
 
 import { Figma, Headphones, Palmtree } from "lucide-react";
 import { type IconType } from "react-icons";
-import { FaSmileBeam } from "react-icons/fa";
+import { FaProjectDiagram, FaSmileBeam } from "react-icons/fa";
 import { GrSystem } from "react-icons/gr";
-import { FaProjectDiagram } from "react-icons/fa";
+import { FlexList } from "~/components/flex-list";
 const preferences = [
   {
     title: "Мемы",
@@ -99,9 +98,9 @@ const preferences = [
 
 export function PreferenceList() {
   return (
-    <GridList>
+    <FlexList>
       {preferences.map(({ description, icon: Icon, title }) => (
-        <li key={title}>
+        <li key={title} className="grow">
           <Card className="h-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -113,6 +112,6 @@ export function PreferenceList() {
           </Card>
         </li>
       ))}
-    </GridList>
+    </FlexList>
   );
 }

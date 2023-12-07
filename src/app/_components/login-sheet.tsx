@@ -1,6 +1,7 @@
 "use client";
 
-import { LogIn } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { FaDiscord } from "react-icons/fa";
 import { Button } from "~/components/ui/button";
 import {
   Sheet,
@@ -8,27 +9,23 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "~/components/ui/sheet";
-import { signIn } from "next-auth/react";
-import { FaDiscord } from "react-icons/fa";
+import { useModalStore } from "~/store/modal.store";
 
 export function LoginSheet() {
+  const open = useModalStore((state) => state.login);
+  const onOpenChange = useModalStore((state) => state.toggleLogin);
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant={"outline"} size={"icon"}>
-          <LogIn />
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="w-full sm:w-auto">
         <SheetHeader>
           <SheetTitle>Авторизация</SheetTitle>
           <SheetDescription>
             Войдите, чтобы получить доступ ко всем возможностям приложения
           </SheetDescription>
         </SheetHeader>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col justify-center">
           <Button
             onClick={() => signIn("discord")}
             className="gap-4"

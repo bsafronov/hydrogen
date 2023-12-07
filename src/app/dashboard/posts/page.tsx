@@ -2,11 +2,12 @@ import Link from "next/link";
 import { Breadcrumbs } from "~/components/breadcrumbs";
 import { Container } from "~/components/container";
 import { GridList } from "~/components/grid-list";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
@@ -28,18 +29,21 @@ export default async function Page() {
         <GridList>
           {posts.map((post) => (
             <li key={post.id}>
-              <Card>
+              <Card className="flex h-full flex-col justify-between">
                 <CardHeader>
                   <CardTitle>{post.title}</CardTitle>
                   {post.shortDescription && (
                     <CardDescription>{post.shortDescription}</CardDescription>
                   )}
                 </CardHeader>
-                <CardContent>
+                <CardFooter className="justify-between">
                   <Button asChild variant={"outline"}>
                     <Link href={`/dashboard/posts/${post.id}`}>Изменить</Link>
                   </Button>
-                </CardContent>
+                  <Badge variant={post.isPublished ? "default" : "destructive"}>
+                    {post.isPublished ? "Опубликован" : "Черновик"}
+                  </Badge>
+                </CardFooter>
               </Card>
             </li>
           ))}

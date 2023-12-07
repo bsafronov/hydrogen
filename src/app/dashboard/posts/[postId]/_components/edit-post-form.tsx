@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sanitize } from "dompurify";
+import * as DOMPurify from "dompurify";
 import { Reorder } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -68,7 +68,6 @@ export function EditPostForm({
   // const ctx = api.useUtils();
   const { mutateAsync: updatePost } = api.post.update.useMutation({
     onSuccess: () => {
-      // await ctx.post.getOne.invalidate({ id: post.id });
       router.refresh();
     },
   });
@@ -86,7 +85,7 @@ export function EditPostForm({
     try {
       await updatePost({
         id,
-        fullDescription: sanitize(fullDescription),
+        fullDescription: DOMPurify.sanitize(fullDescription),
         images,
         link,
         shortDescription,
