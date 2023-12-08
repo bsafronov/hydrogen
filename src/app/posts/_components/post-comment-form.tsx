@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
@@ -21,6 +22,9 @@ type Props = {
 };
 
 export default function PostCommentForm({ postId }: Props) {
+  const session = useSession();
+  const isLoggedIn = session.status === "authenticated";
+
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -43,8 +47,8 @@ export default function PostCommentForm({ postId }: Props) {
               _count: {
                 ...post._count,
                 comments:
-                  ctx.postComment.getManyByPost.getData({ postId })?._count
-                    .comments ?? 0,
+                  ctx.postComment.getManyByPost.getData({ postId })?.length ??
+                  0,
               },
             };
           });
@@ -66,11 +70,19 @@ export default function PostCommentForm({ postId }: Props) {
           control={form.control}
           name="description"
           render={({ field }) => (
-            <TextareaAutoSize {...field} placeholder="Я слушаю, говорите..." />
+            <TextareaAutoSize
+              {...field}
+              placeholder={
+                isLoggedIn
+                  ? "Я слушаю, говорите..."
+                  : "Войдите, чтобы комментировать"
+              }
+              disabled={!isLoggedIn}
+            />
           )}
         />
         <div className="mt-2 flex justify-end">
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading || !isLoggedIn}>
             {isLoading ? "Загрузка..." : "Отправить"}
           </Button>
         </div>

@@ -52,14 +52,15 @@ model User {
     id String @id @default(auto()) @map("_id") @db.ObjectId
 
     name          String?
-    email         String?       @unique
+    email         String?           @unique
     emailVerified DateTime?
     image         String?
-    role          UserRole      @default(USER)
+    role          UserRole          @default(USER)
     accounts      Account[]
     sessions      Session[]
     likes         PostLike[]
     comments      PostComment[]
+    commentLikes  PostCommentLike[]
 }
 
 model VerificationToken {
@@ -105,6 +106,19 @@ model PostComment {
 
     postId String @db.ObjectId
     post   Post   @relation(fields: [postId], references: [id])
+
+    userId String @db.ObjectId
+    user   User   @relation(fields: [userId], references: [id])
+
+    likes PostCommentLike[]
+}
+
+model PostCommentLike {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime @default(now())
+
+    commentId String      @db.ObjectId
+    comment   PostComment @relation(fields: [commentId], references: [id])
 
     userId String @db.ObjectId
     user   User   @relation(fields: [userId], references: [id])

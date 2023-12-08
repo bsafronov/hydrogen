@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import Image from "next/image";
 import { cn } from "~/lib/utils";
+import { useState } from "react";
 
 type Props = {
   imageURLs: string[];
@@ -16,6 +17,8 @@ type Props = {
 };
 
 export function Carousel({ imageURLs, className, sizes }: Props) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <Swiper
       slidesPerView={1}
@@ -26,8 +29,9 @@ export function Carousel({ imageURLs, className, sizes }: Props) {
       }}
       className={cn("rounded-md", className)}
       modules={[Navigation, Pagination]}
+      onActiveIndexChange={({ activeIndex }) => setActiveIndex(activeIndex)}
     >
-      {imageURLs.map((imageURL) => (
+      {imageURLs.map((imageURL, index) => (
         <SwiperSlide key={imageURL} className="relative aspect-video w-full">
           <Image
             src={imageURL}
@@ -38,6 +42,7 @@ export function Carousel({ imageURLs, className, sizes }: Props) {
               sizes ??
               "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             }
+            priority={activeIndex === index}
             onClick={() => window.open(imageURL, "_blank")}
           />
         </SwiperSlide>

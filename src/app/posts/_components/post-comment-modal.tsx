@@ -35,7 +35,7 @@ export function PostCommentModal() {
             <span>Комментарии</span>
             {isSuccess && (
               <span className="text-xs text-muted-foreground">
-                {data?._count.comments}
+                {data?.length}
               </span>
             )}
           </DialogTitle>
@@ -46,7 +46,7 @@ export function PostCommentModal() {
         {isSuccess && postId && data && (
           <div>
             <PostCommentForm postId={postId} />
-            <PostCommentList comments={data.comments} />
+            <PostCommentList comments={data} />
           </div>
         )}
       </DialogContent>

@@ -2,24 +2,29 @@
 
 import { formatRelative } from "date-fns";
 import { ru } from "date-fns/locale";
-import { Heart, Smile } from "lucide-react";
+import { Smile } from "lucide-react";
 import Image from "next/image";
 import { type RouterOutputs } from "~/trpc/shared";
+import { PostCommentDelete } from "./post-comment-delete";
+import { PostCommentLike } from "./post-comment-like";
 
 type Props = {
-  comment: NonNullable<
-    RouterOutputs["postComment"]["getManyByPost"]
-  >["comments"][number];
+  comment: NonNullable<RouterOutputs["postComment"]["getManyByPost"]>[number];
 };
 export function PostCommentItem({
   comment: {
+    id,
+    postId,
+    userId,
     createdAt,
     description,
+    _count,
+    likes,
     user: { image, name },
   },
 }: Props) {
   return (
-    <li className="flex items-start gap-2 py-2">
+    <li className="group relative flex items-start gap-2 py-2">
       {image && (
         <Image
           src={image}
@@ -42,12 +47,15 @@ export function PostCommentItem({
           <span className="text-xs text-muted-foreground">
             {formatRelative(new Date(createdAt), new Date(), { locale: ru })}
           </span>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <Heart className="h-4 w-4" />
-            <span>0</span>
-          </div>
+          <PostCommentLike
+            postId={postId}
+            commentId={id}
+            likesCount={_count.likes}
+            hasUserLike={!!likes.length}
+          />
         </div>
       </div>
+      <PostCommentDelete commentId={id} authorId={userId} postId={postId} />
     </li>
   );
 }
