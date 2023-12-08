@@ -1,7 +1,8 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { FaDiscord } from "react-icons/fa";
+import { FaDiscord, FaGithub, FaYandex } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { Button } from "~/components/ui/button";
 import {
   Sheet,
@@ -25,22 +26,39 @@ export function LoginSheet() {
             Войдите, чтобы получить доступ ко всем возможностям приложения
           </SheetDescription>
         </SheetHeader>
-        <div className="mt-4 flex flex-col justify-center gap-4 sm:gap-2">
+        <div className="mt-4 flex flex-col justify-center gap-2">
+          <Button
+            onClick={() => signIn("google")}
+            className="justify-start gap-4"
+            variant={"outline"}
+          >
+            <FcGoogle className={"h-6 w-6"} />
+            Войти через Google
+          </Button>
+
+          <Button
+            onClick={() => signIn("yandex")}
+            className="justify-start gap-4"
+            variant={"outline"}
+          >
+            <FaYandex className={"h-6 w-6 text-red-500"} />
+            Войти через Yandex
+          </Button>
           <Button
             onClick={() => signIn("discord")}
-            className="gap-4"
+            className="justify-start gap-4"
             variant={"outline"}
           >
             <FaDiscord className={"h-6 w-6 text-indigo-500"} />
             Войти через Discord
           </Button>
           <Button
-            onClick={() => signIn("discord")}
-            className="gap-4"
+            onClick={() => signIn("github")}
+            className="justify-start gap-4"
             variant={"outline"}
           >
-            <FaDiscord className={"h-6 w-6 text-indigo-500"} />
-            Войти через Discord
+            <FaGithub className={"h-6 w-6"} />
+            Войти через Github
           </Button>
         </div>
       </SheetContent>

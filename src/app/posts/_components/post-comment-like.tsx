@@ -45,23 +45,23 @@ export function PostCommentLike({
   return (
     <button
       className={cn(
-        "group/like flex items-center gap-1 text-muted-foreground opacity-50 hover:text-secondary-foreground disabled:hover:text-muted-foreground",
-        hasUserLike && "text-red-500 opacity-100 hover:text-red-400",
+        "group/like mr-2 flex items-center gap-1 text-muted-foreground opacity-50 hover:text-secondary-foreground disabled:hover:text-muted-foreground",
+        hasUserLike && " text-red-500 opacity-100 hover:text-red-400",
       )}
       disabled={!isLoggedIn}
       onClick={() => toggleLike({ commentId })}
     >
       {!isLoading && (
         <>
+          {!!likesCount && (
+            <span className={cn("text-xs font-semibold")}>{likesCount}</span>
+          )}
           <Heart
             className={cn(
               "h-4 w-4",
               hasUserLike && "fill-red-500 group-hover/like:fill-red-400",
             )}
           />
-          {!!likesCount && (
-            <span className={cn("text-xs font-semibold")}>{likesCount}</span>
-          )}
         </>
       )}
       {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}

@@ -55,7 +55,7 @@ export function PostCommentDelete({ commentId, authorId, postId }: Props) {
   return (
     <button
       className={cn(
-        "absolute right-0 top-2 text-muted-foreground opacity-0 hover:text-secondary-foreground group-hover:opacity-50",
+        "absolute right-2 top-2 text-muted-foreground opacity-0 hover:text-secondary-foreground group-hover:opacity-50",
       )}
       onClick={handleDelete}
     >

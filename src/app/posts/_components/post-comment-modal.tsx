@@ -29,8 +29,8 @@ export function PostCommentModal() {
 
   return (
     <Dialog open={!!postId} onOpenChange={() => router.push(pathname)}>
-      <DialogContent className="block h-full w-full border-y-0 sm:rounded-none">
-        <DialogHeader className="mb-8">
+      <DialogContent className="block flex h-full w-full flex-col border-y-0 sm:rounded-none">
+        <DialogHeader className="mb-4">
           <DialogTitle className="flex items-start gap-2">
             <span>Комментарии</span>
             {isSuccess && (
@@ -44,7 +44,7 @@ export function PostCommentModal() {
         {isError && <p>Что-то пошло не так...</p>}
         {postId && isLoading && <p>Загрузка...</p>}
         {isSuccess && postId && data && (
-          <div>
+          <div className="flex grow flex-col gap-4">
             <PostCommentForm postId={postId} />
             <PostCommentList comments={data} />
           </div>
