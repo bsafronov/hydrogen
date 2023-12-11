@@ -79,6 +79,8 @@ model Post {
     fullDescription  String?
     link             String?
     images           String[]
+    tags             String[]
+    isFeatured       Boolean  @default(false)
     isPublished      Boolean  @default(false)
 
     createdAt DateTime @default(now())

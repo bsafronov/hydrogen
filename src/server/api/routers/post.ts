@@ -30,6 +30,8 @@ export const postRouter = createTRPCRouter({
         link: z.string().optional(),
         images: z.array(z.string()).optional(),
         isPublished: z.boolean().optional(),
+        isFeatured: z.boolean().optional(),
+        tags: z.array(z.string()).optional(),
       }),
     )
     .mutation(({ ctx, input }) => {
@@ -41,6 +43,8 @@ export const postRouter = createTRPCRouter({
         link,
         images,
         isPublished,
+        isFeatured,
+        tags,
       } = input;
       return ctx.db.post.update({
         where: {
@@ -53,6 +57,8 @@ export const postRouter = createTRPCRouter({
           link,
           images,
           isPublished,
+          isFeatured,
+          tags,
         },
       });
     }),
@@ -86,6 +92,14 @@ export const postRouter = createTRPCRouter({
       where: {
         isPublished: true,
       },
+      orderBy: [
+        {
+          isFeatured: "desc",
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
       select: {
         _count: {
           select: {
@@ -105,6 +119,8 @@ export const postRouter = createTRPCRouter({
         shortDescription: true,
         link: true,
         images: true,
+        tags: true,
+        isFeatured: true,
       },
     });
   }),

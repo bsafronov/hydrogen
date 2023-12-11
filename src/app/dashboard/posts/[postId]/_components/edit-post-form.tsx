@@ -22,7 +22,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Textarea } from "~/components/ui/textarea";
+import { Textarea, TextareaAutoSize } from "~/components/ui/textarea";
 import { UploadButton, deleteImage } from "~/lib/uploadthing";
 import { api } from "~/trpc/react";
 import { type RouterOutputs } from "~/trpc/shared";
@@ -32,8 +32,10 @@ const schema = z.object({
   shortDescription: z.string(),
   fullDescription: z.string(),
   isPublished: z.boolean(),
+  isFeatured: z.boolean(),
   link: z.string(),
   images: z.array(z.string()),
+  tags: z.string(),
 });
 
 type Schema = z.infer<typeof schema>;
@@ -48,6 +50,8 @@ export function EditPostForm({
   link,
   images,
   id,
+  isFeatured,
+  tags,
 }: Props) {
   const router = useRouter();
 
@@ -60,6 +64,8 @@ export function EditPostForm({
       isPublished,
       link: link ?? "",
       images: images,
+      isFeatured: isFeatured ?? false,
+      tags: tags.join(", "),
     },
   });
 
@@ -80,7 +86,14 @@ export function EditPostForm({
       link,
       shortDescription,
       title,
+      isFeatured,
+      tags,
     } = input;
+
+    const tagsArray = tags
+      .split(",")
+      .map((tag) => tag.trim().toLowerCase())
+      .filter((tag) => tag.length > 0);
 
     try {
       await updatePost({
@@ -91,6 +104,8 @@ export function EditPostForm({
         shortDescription,
         title,
         isPublished,
+        isFeatured,
+        tags: tagsArray,
       });
       toast.success("Пост успешно обновлён");
     } catch (e) {
@@ -168,6 +183,22 @@ export function EditPostForm({
         />
         <FormField
           control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Теги{" "}
+                <span className="text-muted-foreground">(через запятую)</span>
+              </FormLabel>
+              <FormControl>
+                <TextareaAutoSize {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="isPublished"
           render={({ field }) => (
             <FormItem>
@@ -178,7 +209,25 @@ export function EditPostForm({
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel>Виден всем</FormLabel>
+                <FormLabel>Виден всем 🫣</FormLabel>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="isFeatured"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex items-center gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel>Избранное ⭐</FormLabel>
               </div>
               <FormMessage />
             </FormItem>

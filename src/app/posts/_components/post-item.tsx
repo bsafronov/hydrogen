@@ -1,6 +1,6 @@
 import { formatRelative } from "date-fns";
 import { ru } from "date-fns/locale";
-import { LinkIcon } from "lucide-react";
+import { LinkIcon, Star } from "lucide-react";
 import Link from "next/link";
 import { Carousel } from "~/components/carousel";
 import {
@@ -11,20 +11,50 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
 import { type RouterOutputs } from "~/trpc/shared";
-import { PostLike } from "./post-like";
 import { PostComment } from "./post-comment";
+import { PostLike } from "./post-like";
 
 type Props = {
   post: RouterOutputs["post"]["getManyPublished"][number];
 };
 
 export function PostItem({
-  post: { id, title, shortDescription, link, images, likes, createdAt, _count },
+  post: {
+    id,
+    title,
+    shortDescription,
+    link,
+    images,
+    likes,
+    createdAt,
+    _count,
+    isFeatured,
+    tags,
+  },
 }: Props) {
   return (
     <li>
-      <Card className="flex h-full flex-col">
+      <Card className="relative flex h-full flex-col">
+        {isFeatured && (
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Star className="absolute right-6 top-6 fill-yellow-400 text-yellow-500" />
+              </TooltipTrigger>
+              <TooltipContent align="end">
+                Автор гордится этим проектом
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
         <CardHeader className="grow">
           <CardTitle>
             <Link
@@ -47,6 +77,16 @@ export function PostItem({
         </CardHeader>
         <CardContent>
           <Carousel imageURLs={images} />
+          <ul className="mt-2 flex flex-wrap gap-1">
+            {tags.map((tag, index) => (
+              <li
+                key={index}
+                className="rounded-full border bg-muted px-2 text-xs"
+              >
+                #{tag}
+              </li>
+            ))}
+          </ul>
         </CardContent>
         <CardFooter className="items-center justify-between">
           <div className="flex items-center gap-2">
