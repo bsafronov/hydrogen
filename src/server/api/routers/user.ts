@@ -22,4 +22,24 @@ export const userRouter = createTRPCRouter({
         },
       });
     }),
+  updateUser: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().optional(),
+        image: z.string().optional(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      const { name, image } = input;
+
+      return ctx.db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          name,
+          image,
+        },
+      });
+    }),
 });

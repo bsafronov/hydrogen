@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as DOMPurify from "dompurify";
 import { Reorder } from "framer-motion";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { UploadButton } from "~/lib/uploadthing";
+import { UploadButton, deleteImage } from "~/lib/uploadthing";
 import { api } from "~/trpc/react";
 import { type RouterOutputs } from "~/trpc/shared";
 
@@ -100,14 +100,8 @@ export function EditPostForm({
 
   const handleDeleteImage = async (url: string) => {
     try {
-      const res = await fetch("/api/uploadthing", {
-        method: "DELETE",
-        body: JSON.stringify({ url }),
-      });
+      await deleteImage(url);
 
-      if (!res.ok) {
-        throw new Error("Failed to delete image");
-      }
       form.setValue(
         "images",
         form.getValues("images").filter((formUrl) => formUrl !== url),
@@ -233,7 +227,21 @@ export function EditPostForm({
         <UploadButton
           endpoint="imageUploader"
           appearance={{
-            button: "bg-primary text-primary-foreground",
+            button:
+              "bg-primary ring-ring outline-none focus-within:ring-ring after:bg-background/20 text-background",
+          }}
+          content={{
+            button: ({ uploadProgress, isUploading }) => {
+              if (uploadProgress === 100 && isUploading) {
+                return <Loader2 className="h-4 w-4 animate-spin" />;
+              }
+
+              if (isUploading) {
+                return <span>{uploadProgress}%</span>;
+              }
+
+              return <span>Загрузить фото</span>;
+            },
           }}
           onClientUploadComplete={(res) => {
             res.map((item) => {

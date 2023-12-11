@@ -7,9 +7,11 @@ export function Avatar() {
     <div className="self-center">
       <div className="relative h-80 w-80 overflow-hidden rounded-full border">
         <Image
-          src={"/avatar.png"}
+          src={"/myphoto.jpg"}
           alt="avatar"
           fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 33vw"
+          priority
           className="absolute inset-0 object-cover"
         />
       </div>
