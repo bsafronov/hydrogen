@@ -55,7 +55,7 @@ export function PostItem({
           </TooltipProvider>
         )}
 
-        <CardHeader className="grow">
+        <CardHeader>
           <CardTitle>
             <Link
               href={`/posts/${id}`}
@@ -75,9 +75,8 @@ export function PostItem({
             )}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Carousel imageURLs={images} />
-          <ul className="mt-2 flex flex-wrap gap-1">
+        <CardContent className="flex grow flex-col justify-end">
+          <ul className="mb-2 flex flex-wrap gap-1">
             {tags.map((tag, index) => (
               <li
                 key={index}
@@ -87,6 +86,7 @@ export function PostItem({
               </li>
             ))}
           </ul>
+          <Carousel imageURLs={images} className="w-full" />
         </CardContent>
         <CardFooter className="items-center justify-between">
           <div className="flex items-center gap-2">

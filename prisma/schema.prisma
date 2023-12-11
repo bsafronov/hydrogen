@@ -95,10 +95,10 @@ model PostLike {
     createdAt DateTime @default(now())
 
     postId String @db.ObjectId
-    post   Post   @relation(fields: [postId], references: [id])
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     userId String @db.ObjectId
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PostComment {
@@ -107,10 +107,10 @@ model PostComment {
     createdAt   DateTime @default(now())
 
     postId String @db.ObjectId
-    post   Post   @relation(fields: [postId], references: [id])
+    post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
     userId String @db.ObjectId
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     likes PostCommentLike[]
 }
@@ -120,8 +120,8 @@ model PostCommentLike {
     createdAt DateTime @default(now())
 
     commentId String      @db.ObjectId
-    comment   PostComment @relation(fields: [commentId], references: [id])
+    comment   PostComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
     userId String @db.ObjectId
-    user   User   @relation(fields: [userId], references: [id])
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

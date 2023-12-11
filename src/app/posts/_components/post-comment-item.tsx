@@ -26,13 +26,15 @@ export function PostCommentItem({
   return (
     <li className="group relative flex items-start gap-2 py-2">
       {image && (
-        <Image
-          src={image}
-          alt={`${name} avatar`}
-          width={48}
-          height={48}
-          className="rounded-full border"
-        />
+        <div className="relative h-[48px] max-h-[48px] min-h-[48px] w-[48px] min-w-[48px] max-w-[48px] overflow-hidden rounded-full">
+          <Image
+            src={image}
+            alt={`${name} avatar`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="absolute object-cover"
+          />
+        </div>
       )}
       {!image && (
         <div className="flex h-8 w-8 items-center justify-center rounded-full border">

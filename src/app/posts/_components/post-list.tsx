@@ -14,8 +14,6 @@ export function PostList({ posts }: Props) {
     initialData: posts,
   });
 
-  console.log(clientPosts);
-
   return (
     <GridList>
       {clientPosts.map((post) => (

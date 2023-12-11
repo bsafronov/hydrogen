@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Confirm } from "~/components/confirm";
 import { Editor } from "~/components/editor";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -75,6 +76,13 @@ export function EditPostForm({
   const { mutateAsync: updatePost } = api.post.update.useMutation({
     onSuccess: () => {
       router.refresh();
+    },
+  });
+
+  const { mutate: deletePost } = api.post.delete.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      router.push("/dashboard/posts");
     },
   });
 
@@ -301,6 +309,9 @@ export function EditPostForm({
         />
         <div className="mt-4 flex justify-end">
           <Button>Сохранить</Button>
+          <Confirm onConfirm={() => deletePost({ id })} variant="destructive">
+            <Button type="button">Удалить</Button>
+          </Confirm>
         </div>
       </form>
     </Form>
