@@ -12,5 +12,9 @@ export default async function Layout({ children }: Props) {
     redirect("/");
   }
 
+  if (session.user.role !== "ADMIN") {
+    redirect("/");
+  }
+
   return <>{children}</>;
 }
