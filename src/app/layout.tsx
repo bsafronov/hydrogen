@@ -9,6 +9,7 @@ import { Header } from "./_components/header";
 import { ModalProvider } from "~/providers/modal.provider";
 import { ToasterProvider } from "~/providers/toaster.provider";
 import { AuthProvider } from "~/providers/auth.provider";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ export default function RootLayout({
             </ThemeProvider>
           </TRPCReactProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
