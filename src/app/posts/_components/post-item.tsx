@@ -1,5 +1,3 @@
-import { formatRelative } from "date-fns";
-import { ru } from "date-fns/locale";
 import { LinkIcon, Star } from "lucide-react";
 import Link from "next/link";
 import { Carousel } from "~/components/carousel";
@@ -17,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
+import { formatDate } from "~/lib/date";
 import { type RouterOutputs } from "~/trpc/shared";
 import { PostComment } from "./post-comment";
 import { PostLike } from "./post-like";
@@ -98,7 +97,7 @@ export function PostItem({
             <PostComment commentCount={_count.comments} postId={id} />
           </div>
           <span className="text-xs text-muted-foreground">
-            {formatRelative(new Date(createdAt), new Date(), { locale: ru })}
+            {formatDate(createdAt)}
           </span>
         </CardFooter>
       </Card>

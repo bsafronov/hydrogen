@@ -1,9 +1,8 @@
-import { formatRelative } from "date-fns";
-import { ru } from "date-fns/locale";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "~/components/breadcrumbs";
 import { Carousel } from "~/components/carousel";
 import { Container } from "~/components/container";
+import { formatDate } from "~/lib/date";
 import { api } from "~/trpc/server";
 
 type Props = {
@@ -35,18 +34,8 @@ export default async function Page({ params: { postId } }: Props) {
           <div>
             <div className="mb-8 flex flex-col text-center">
               <div className="mb-8 flex flex-col items-end justify-end self-end text-xs text-muted-foreground">
-                <span>
-                  {formatRelative(new Date(createdAt), new Date(), {
-                    locale: ru,
-                  })}
-                </span>
-                <span>
-                  (изм.{" "}
-                  {formatRelative(new Date(updatedAt), new Date(), {
-                    locale: ru,
-                  })}
-                  )
-                </span>
+                <span>{formatDate(createdAt)}</span>
+                <span>изм. {formatDate(updatedAt)}</span>
               </div>
               <h1 className="mb-2 text-4xl font-extrabold">{post.title}</h1>
               {link && (

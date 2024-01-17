@@ -1,9 +1,8 @@
 "use client";
 
-import { formatRelative } from "date-fns";
-import { ru } from "date-fns/locale";
 import { Smile } from "lucide-react";
 import Image from "next/image";
+import { formatDate } from "~/lib/date";
 import { type RouterOutputs } from "~/trpc/shared";
 import { PostCommentDelete } from "./post-comment-delete";
 import { PostCommentLike } from "./post-comment-like";
@@ -47,7 +46,7 @@ export function PostCommentItem({
         <p>{description}</p>
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">
-            {formatRelative(new Date(createdAt), new Date(), { locale: ru })}
+            {formatDate(createdAt)}
           </span>
           <PostCommentLike
             postId={postId}
